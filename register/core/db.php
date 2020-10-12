@@ -119,6 +119,27 @@ class DB{
 
 
 
+    function insert($tbl,$items){
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $values=array();
+        foreach(array_values($items)as $item){
+            $values[]="'".$item."'";
+        }
+       try{
+        $this->final_query="insert into ".$tbl."(".implode(",",array_keys($items)).") values (".implode(",",$values).")";
+        
+        $stmt=$this->connection->prepare($this->final_query);
+        $stmt->execute();
+        echo $this->final_query;
+       }catch(Exception $ex){
+           
+           echo $ex->getMessage();
+       }
+        return $this;
+
+    }
+
+
     function build (){
 
             //return $this->columns.$this->tables.$this->cond.$this->groupBy.$this->ordBy;
